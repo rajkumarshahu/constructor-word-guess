@@ -8,16 +8,13 @@
 
 // A function that takes a character as an argument and checks it against the underlying character, updating the stored boolean value to true if it was guessed correctly
 
-const Letter = letter => {
+function Letter (letter){
   this.letter = letter;
   this.isGuessed = false;
 
   this.printLetter = () => {
     if (this.isGuessed == false) {
-      return "_";
-    } else if (this.letter == " ") {
-      this.isGuessed = true;
-      return " ";
+      return "_ ";
     } else {
       return this.letter;
     }
@@ -29,5 +26,7 @@ const Letter = letter => {
     }
   };
 };
+
+
 
 module.exports = Letter;

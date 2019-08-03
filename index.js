@@ -4,26 +4,47 @@
 
 // Prompts the user for each guess and keeps track of the user's remaining guesses
 
-let word = require('./letter');
+var inquirer = require('inquirer');
 
-let words = ["Angular", "Meteor", "Express", "Node.js", "React.js", "Vue.js","Ember.js", "Backbone.js", "TypeScript", "Webpack"]
+let Word = require('./word');
 
-let wordSelected = ()=>{
-    randWord = words[Math.floor(Math.random() * words.length)];
-    return randWord;
+let words = ["Angular", "Meteor", "Express", "Nodejs", "Reactjs", "Vuejs","Emberjs", "Backbonejs", "TypeScript", "Webpack"]
+
+randWord = words[ Math.floor(Math.random() * words.length) ].toLowerCase();
+
+let rand_word_obj = new Word(randWord);
+console.log(rand_word_obj.getWord2());
+
+let answer_obj = new Word(randWord);
+console.log(answer_obj.getPuzzleWord());
+
+var inquirer = require('inquirer');
+var question = [
+    {
+        type: 'input',
+        name: 'user_input',
+        message: 'Guess a letter',
+        validate: function (value) {
+            var pass = value.match(/^[a-z]$/i);
+            if (pass) return true;
+
+            return 'Please enter a valid letter';
+        },
+        when: function () {
+            if(rand_word_obj.getWord2() == answer_obj.getPuzzleWord()) {
+                return true;
+            }
+        }
+    }
+]
+
+function ask(){
+    inquirer.prompt(question);
 }
 
-
-let generateUnderscores = () => {
-    wordSelected();
-    console.log(randWord);
-    underscores = [];
-    for (let i = 0; i < randWord.length; i++) {
-      if (randWord.charAt(i)) {
-        underscores.push("_");
-      }
-    }
-    return underscores.join(" ");
-  };
-
-  console.log(generateUnderscores());
+inquirer
+  .prompt(question)
+  .then(answers => {
+    console.log(answers);
+    ask()
+  });
