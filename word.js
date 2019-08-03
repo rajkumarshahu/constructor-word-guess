@@ -11,12 +11,23 @@ var Letter = require('./letter');
 function Word(randWord) {
     this.arrOfNewLetterObj = [];
 
+    this.letter = new Letter();
+
     this.getWord = function(){
         var word = "";
         for (var i = 0; i < this.arrOfNewLetterObj.length; i++) {
             word = word.concat(this.arrOfNewLetterObj[i].printLetter());
         }
         return word;
+    }
+
+    this.checkWord =  function(user_input) {
+        let word_rand = '';
+        for (var i = 0; i < randWord.length; i++) {
+            var letter_rand = new Letter(randWord[i]);
+            word_rand = word_rand.concat(letter_rand.printLetter());
+        }
+        return word_rand;
     }
 
     this.getWord2 = function () {

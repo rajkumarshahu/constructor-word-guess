@@ -29,11 +29,6 @@ var question = [
             if (pass) return true;
 
             return 'Please enter a valid letter';
-        },
-        when: function () {
-            if(rand_word_obj.getWord2() == answer_obj.getPuzzleWord()) {
-                return true;
-            }
         }
     }
 ]
@@ -45,6 +40,6 @@ function ask(){
 inquirer
   .prompt(question)
   .then(answers => {
-    console.log(answers);
+    answer_obj.checkWord(answers.user_input);
     ask()
   });
