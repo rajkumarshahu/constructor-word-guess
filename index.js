@@ -8,22 +8,20 @@ var inquirer = require('inquirer');
 
 let Word = require('./word');
 
-let words = ["Angular", "Meteor", "Express", "Nodejs", "Reactjs", "Vuejs","Emberjs", "Backbonejs", "TypeScript", "Webpack"]
+let words = ["Angular", "Meteor", "Express", "Nodejs", "Reactjs", "Vuejs","Emberjs", "Backbonejs", "TypeScript", "Webpack"];
 
 randWord = words[ Math.floor(Math.random() * words.length) ].toLowerCase();
 
 let rand_word_obj = new Word(randWord);
-console.log(rand_word_obj.getWord2());
 
-let answer_obj = new Word(randWord);
-console.log(answer_obj.getPuzzleWord());
+//let answer_obj = new Word(randWord);
 
 var inquirer = require('inquirer');
 var question = [
     {
         type: 'input',
         name: 'user_input',
-        message: 'Guess a letter',
+        message: "Guess a letter: ",
         validate: function (value) {
             var pass = value.match(/^[a-z]$/i);
             if (pass) return true;
@@ -33,13 +31,56 @@ var question = [
     }
 ]
 
-function ask(){
-    inquirer.prompt(question);
-}
+console.log(rand_word_obj.getPuzzleWord());
 
-inquirer
+let guessedLetters = [];
+let guesses = rand_word_obj.arrOfNewLetterObj.length;
+
+function guessALetter ()
+{
+  inquirer
   .prompt(question)
   .then(answers => {
-    answer_obj.checkWord(answers.user_input);
-    ask()
+    //debugger;
+    // console.log('here!')
+    // console.log(rand_word_obj.getWordArray());
+    // console.log(guesses);
+    // console.log(rand_word_obj.getWordArray().includes('_'));
+
+    if(guessedLetters.includes(answers.user_input)) {
+      console.log('---------------------------------------------------')
+      console.log('You already guessed ' + answers.user_input + '!');
+      console.log('---------------------------------------------------')
+      console.log(rand_word_obj.getPuzzleWord());
+      console.log('You have: ' + guesses + ' guesses remaining. \n');
+      guessALetter();
+    } else {
+      let is_correct = false;
+      is_correct = rand_word_obj.checkLetterInUserInput(answers.user_input);
+      if(!is_correct){
+        guesses--;
+      }
+
+      if(guesses <= 0 && rand_word_obj.getWordArray().includes('_')) {
+        console.log('----------------------------------------');
+        console.log('You Lose!');
+        console.log('----------------------------------------');
+      }else if(!rand_word_obj.getWordArray().includes('_')) {
+        console.log('----------------------------------------');
+        console.log('You Win!');
+        console.log('The correct answer is: '+rand_word_obj.getPuzzleWord())
+        console.log('----------------------------------------');
+      }else{
+        console.log('---------------------------------------------------')
+        console.log('You guessed: ' + answers.user_input + '!');
+        console.log('---------------------------------------------------')
+        console.log(rand_word_obj.getPuzzleWord());
+        console.log('You have: ' + guesses + ' guesses remaining. \n');
+        guessALetter();
+      }
+    }
+    guessedLetters.push(answers.user_input);
   });
+}
+
+guessALetter();

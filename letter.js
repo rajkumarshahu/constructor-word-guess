@@ -14,7 +14,7 @@ function Letter (letter){
 
   this.printLetter = () => {
     if (this.isGuessed == false) {
-      return "_ ";
+      return "_";
     } else {
       return this.letter;
     }
@@ -23,6 +23,9 @@ function Letter (letter){
   this.checkUserGuess = guessedLetter => {
     if (guessedLetter === this.letter) {
       this.isGuessed = true;
+      return true;
+    }else{
+      return false;
     }
   };
 };
